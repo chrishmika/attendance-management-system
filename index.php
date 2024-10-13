@@ -1,5 +1,5 @@
 <?php
-// require_once $_SERVER['DOCUMENT_ROOT'] . '/MyAttendanceSys/config.php';
+// require_once $_SERVER['DOCUMENT_ROOT'] . '/attendance-management-system/config.php';
 include_once 'config.php';
 include_once ROOT_PATH . '/php/config/Database.php'; // Carefull with location!
 include_once ROOT_PATH . '/php/class/Utils.php';
