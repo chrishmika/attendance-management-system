@@ -64,8 +64,7 @@ if (isset($_POST["userSearch"]) && ($user->isAdmin() || $user->isLecturer())) {
     $response['messages'] = $messages;
     $response['error'] = false;
     echo json_encode($response);
-} else if (isset($_POST['attendanceStatus']) && isset($_POST['currentTimeString']) && isset($_POST['fingerprintId'])) {
-    $std_id = $_POST['stdId'];
+} else if (isset($_POST['attendanceStatus']) && isset($_POST['currentTimeString']) && isset($_POST['fingerprintId']) && isset($_POST['classId'])) {
     $class_id = $_POST['classId'];
     $attendanceStatus = $_POST['attendanceStatus'];
     $currentTimeString = $_POST['currentTimeString'];
@@ -75,30 +74,30 @@ if (isset($_POST["userSearch"]) && ($user->isAdmin() || $user->isLecturer())) {
     $messages = [];
     $response = [];
 
-    // Verify fingerprint ID
-    $query = "SELECT fingerprint_id FROM uoj_student WHERE std_id = ?";
+    // Find student ID by fingerprint ID
+    $query = "SELECT std_id FROM uoj_student WHERE fingerprint_id = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param('i', $std_id);
+    $stmt->bind_param('s', $fingerprintId);
     $stmt->execute();
-    $stmt->bind_result($storedFingerprintId);
+    $stmt->bind_result($std_id);
     $stmt->fetch();
     $stmt->close();
 
-    if ($storedFingerprintId == $fingerprintId) {
+    if ($std_id) {
         try {
             // Assuming $lecr is the instance managing attendance
             $lecr->editAttendance($std_id, $class_id, $currentTimeString, $attendanceStatus);
-            $messages[] = "Attendance marked";
+            $messages[] = "Attendance marked successfully for student ID: $std_id";
         } catch (Exception $e) {
-            $errors[] = "Error in marking attendance";
+            $errors[] = "Error in marking attendance: " . $e->getMessage();
         }
     } else {
-        $errors[] = "Fingerprint ID does not match";
+        $errors[] = "No student found with the provided fingerprint ID.";
     }
 
     $response['errors'] = $errors;
     $response['messages'] = $messages;
-    $response['error'] = false;
+    $response['error'] = !empty($errors);
     echo json_encode($response);
 } else {
     $response['error'] = true;
