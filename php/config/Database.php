@@ -23,10 +23,10 @@ if (isset($_SESSION['last_activity'])) {
 $_SESSION['last_activity'] = time();
 class Database
 {
-    private $host = 'localhost';
-    private $username = 'root';
-    private $password = '';
-    private $database = 'uoj';
+    private $host = '10.10.10.157';
+    private $username = 'csc210user';
+    private $password = 'CSC210!';
+    private $database = 'group7';
 
     public function getConnection()
     {
