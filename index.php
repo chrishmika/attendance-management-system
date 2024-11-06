@@ -2,9 +2,9 @@
 // Keep your database connection logic intact
 include_once 'config.php';
 include_once ROOT_PATH . '/php/config/Database.php'; 
-include_once ROOT_PATH . '/var/www/html/group7/attendance-management-system/php/class/Utils.php';
-include_once ROOT_PATH . '/var/www/html/group7/attendance-management-system/php/class/User.php';
-include_once ROOT_PATH . '/var/www/html/group7/attendance-management-system/php/class/Lecturer.php';
+include_once ROOT_PATH . '/php/class/Utils.php';
+include_once ROOT_PATH . '/php/class/User.php';
+include_once ROOT_PATH . '/php/class/Lecturer.php';
 
 // Initializing
 $database = new Database();
@@ -15,13 +15,13 @@ $util = new Utils();
 
 if ($user->isLoggedIn()) {
     if ($user->isAdmin()) {
-        header("Location: " . SERVER_ROOT . "/var/www/html/group7/attendance-management-system/php/admin_dashboard.php");
+        header("Location: " . SERVER_ROOT . "/php/admin_dashboard.php");
     } else if ($user->isLecturer()) {
-        header("Location: " . SERVER_ROOT . "/var/www/html/group7/attendance-management-system/php/lecturer_dashboard.php");
+        header("Location: " . SERVER_ROOT . "/php/lecturer_dashboard.php");
     } else if ($user->isInstructor()) {
-        header("Location: " . SERVER_ROOT . "/var/www/html/group7/attendance-management-system/php/instructor_dashboard.php");
+        header("Location: " . SERVER_ROOT . "/php/instructor_dashboard.php");
     } else if ($user->isStudent()) {
-        header("Location: " . SERVER_ROOT . "/var/www/html/group7/attendance-management-system/php/student_dashboard.php");
+        header("Location: " . SERVER_ROOT . "/php/student_dashboard.php");
     }
 }
 
@@ -32,13 +32,13 @@ if (isset($_POST['sign_in'])) {
 
     if ($user->login($username, $password, $rememberMe)) {
         if ($user->isAdmin()) {
-            header("Location: " . SERVER_ROOT . "/var/www/html/group7/attendance-management-system/php/admin_dashboard.php");
+            header("Location: " . SERVER_ROOT . "/php/admin_dashboard.php");
         } else if ($user->isLecturer()) {
-            header("Location: " . SERVER_ROOT . "/var/www/html/group7/attendance-management-system/php/lecturer_dashboard.php");
+            header("Location: " . SERVER_ROOT . "/php/lecturer_dashboard.php");
         } else if ($user->isInstructor()) {
-            header("Location: " . SERVER_ROOT . "/var/www/html/group7/attendance-management-system/php/instructor_dashboard.php");
+            header("Location: " . SERVER_ROOT . "/php/instructor_dashboard.php");
         } else if ($user->isStudent()) {
-            header("Location: " . SERVER_ROOT . "/var/www/html/group7/attendance-management-system/php/student_dashboard.php");
+            header("Location: " . SERVER_ROOT . "/php/student_dashboard.php");
         } else {
             echo "Something went wrong!";
         }
@@ -53,9 +53,9 @@ if (isset($_POST['sign_in'])) {
 ?>
 
 <?php
-include_once ROOT_PATH . '/var/www/html/group7/attendance-management-system/php/include/header.php';
+include_once ROOT_PATH . '/php/include/header.php';
 echo "<title> AMS Dashboard </title>";
-include_once ROOT_PATH . '/var/www/html/group7/attendance-management-system/php/include/content.php';
+include_once ROOT_PATH . '/php/include/content.php';
 ?>
 
 <!-- Custom CSS for enhanced professional look -->
@@ -145,7 +145,7 @@ include_once ROOT_PATH . '/var/www/html/group7/attendance-management-system/php/
 <!-- Dashboard content begins -->
 <div class="dashboard-header">
     <!-- System logo -->
-    <img src="<?php echo SERVER_ROOT; ?>/var/www/html/group7/attendance-management-system/res/logo/AMS_logo_w.png" alt="System Logo">
+    <img src="<?php echo SERVER_ROOT; ?>/res/logo/AMS_logo_w.png" alt="System Logo">
     <h1>Attendance Management System (AMS)</h1>
     <p class="lead">Streamline your attendance management with ease.</p>
 </div>
@@ -202,8 +202,8 @@ include_once ROOT_PATH . '/var/www/html/group7/attendance-management-system/php/
 </div>
 
 <?php
-include_once ROOT_PATH . '/var/www/html/group7/attendance-management-system/php/include/modal_form.php';
-include_once ROOT_PATH . '/var/www/html/group7/attendance-management-system/php/include/footer.php';
+include_once ROOT_PATH . '/php/include/modal_form.php';
+include_once ROOT_PATH . '/php/include/footer.php';
 ?>
 
 <!-- Bootstrap JS and dependencies -->
