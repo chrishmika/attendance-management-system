@@ -56,6 +56,10 @@ if ($user->isAdmin() || $user->isLecturer()) {
     </div>
 </div>
 <div class="container-md mt-3 p-3">
+    <button class="btn btn-success" onclick="markAllAttendance()">Mark All Attendance</button>
+</div>
+
+<div class="container-md mt-3 p-3">
     <table class="table table-hover border shadow">
         <h3 id="class-title"></h3>
         <h6><?php echo $class['class_date'] . " " . $class['start_time'] . " - " . $class['end_time']; ?></h6>
@@ -106,18 +110,6 @@ foreach ($studentList as $student) {
 
     // Action buttons with fingerprint ID data attribute
     echo "<td>
-            <button class='btn btn-success' onclick='markAttendance(this)' 
-            data-std-id='" . $student[3] . "' 
-            data-user-role='3' 
-            data-user-name='" . $student[1] . "' 
-            data-user-index='" . $student[2] . "' 
-            data-user-reg='" . $student[0] . "' 
-            data-attendance-status='" . $student[4] . "'"
-            . (!empty($student['fingerprint_id']) ? " data-fingerprint-id='" . $student['fingerprint_id'] . "'" : "") . 
-            ($classEnded ? " disabled" : "") . ">
-                Mark
-            </button>
-
             <button class='btn btn-danger' id='remove-" . $student[3] . "' onclick='removeUserFromCourse(this)' 
             data-std-id='" . $student[3] . "' 
             data-user-role='3' 
@@ -247,14 +239,13 @@ foreach ($studentList as $student) {
         }
     }
 
-    function markAttendance(std) {
-    if (std.dataset.attendanceStatus == 1 || std.dataset.attendanceStatus == 2) {
-        sendMessage('Already marked', 'warning');
-        return 0;
+    function markAllAttendance() {
+    let fingerprintId = prompt("Please enter your fingerprint ID:");
+    if (!fingerprintId) {
+        sendMessage("Fingerprint ID is required.", "warning");
+        return;
     }
-    
-    let randomFingerprintId = 4;//Math.floor(Math.random() * 4);  Generate random ID between 0 and 2
-    
+
     let currentTime = new Date();
     let currentTimeString = [
         currentTime.getHours().toString().padStart(2, '0'),
@@ -264,44 +255,44 @@ foreach ($studentList as $student) {
 
     let classStartTime = new Date(currentTime.toDateString() + " " + classStart);
     let classEndTime = new Date(currentTime.toDateString() + " " + classEnd);
-    let timeSpace = 10; // 10 Minutes before and after
+    let timeSpace = 10; // 10 Minutes allowance before and after
     let timeDifference = Math.floor(Math.abs(currentTime - classStartTime) / 60000);
 
+    // Determine attendance status
+    let attendanceStatus;
     if (currentTime < classStartTime && timeDifference > timeSpace) {
-        sendMessage('Class has not started yet', 'warning');
-        return 0;
+        sendMessage("Class has not started yet", "warning");
+        return;
     } else if (currentTime > classEndTime) {
-        sendMessage('Class has ended', 'warning');
-        return 0;
+        sendMessage("Class has ended", "warning");
+        return;
+    } else if (timeDifference <= timeSpace) {
+        attendanceStatus = 1; // Present
     } else {
-        let attendanceStatus = 1;
-        if (currentTime > classStartTime && timeDifference > timeSpace) {
-            attendanceStatus = 2;
-        }
-
-        $.ajax({
-            method: 'POST',
-            url: '<?php echo SERVER_ROOT; ?>/php/mark_attendance_action.php',
-            data: {
-                stdId: std.dataset.stdId,
-                classId: classId,
-                attendanceStatus: attendanceStatus,
-                currentTimeString: currentTimeString,
-                fingerprintId: randomFingerprintId  // Send fingerprint ID to backend
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.error) {
-                    sendMessage(response.errors, 'danger', true);
-                } else {
-                    sendMessage(response.messages, 'success', true);
-                }
-            },
-            error: function() {
-                sendMessage('Error on loading users', 'danger');
-            }
-        });
+        attendanceStatus = 2; // Late
     }
+
+    $.ajax({
+        method: 'POST',
+        url: '<?php echo SERVER_ROOT; ?>/php/mark_attendance_action.php',
+        data: {
+            classId: classId,
+            attendanceStatus: attendanceStatus,
+            currentTimeString: currentTimeString,
+            fingerprintId: fingerprintId
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.error) {
+                sendMessage(response.errors, 'danger', true);
+            } else {
+                sendMessage(response.messages, 'success', true);
+            }
+        },
+        error: function() {
+            sendMessage('Error marking attendance', 'danger');
+        }
+    });
 }
 
 
