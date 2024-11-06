@@ -1,7 +1,7 @@
 <?php
 // Keep your database connection logic intact
 include_once 'config.php';
-include_once ROOT_PATH . '/var/www/html/group7/attendance-management-system/php/config/Database.php'; 
+include_once ROOT_PATH . '/php/config/Database.php'; 
 include_once ROOT_PATH . '/var/www/html/group7/attendance-management-system/php/class/Utils.php';
 include_once ROOT_PATH . '/var/www/html/group7/attendance-management-system/php/class/User.php';
 include_once ROOT_PATH . '/var/www/html/group7/attendance-management-system/php/class/Lecturer.php';
