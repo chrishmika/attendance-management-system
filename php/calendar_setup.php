@@ -3,6 +3,7 @@ require_once '../config.php';
 include_once ROOT_PATH . '/php/config/Database.php';
 include_once ROOT_PATH . '/php/class/User.php';
 include_once ROOT_PATH . '/php/class/Lecturer.php';
+//include_once ROOT_PATH . '/php/class/Student.php';
 include_once ROOT_PATH . '/php/class/Utils.php';
 
 $db = new Database();
@@ -42,38 +43,6 @@ if (isset($_POST['lecr_id'])) {
     }
 }
 
-<?php
-// Assuming you have already started the session and initialized database connection
 
-// Check if the std_id is passed in the request
-if (isset($_POST['std_id'])) {
-    $std_id = $_POST['std_id'];
-
-    // Retrieve events based on the student ID
-    // Example: Get the classes for the student (customize this query based on your database)
-    $query = "SELECT class_id,attend_time, attendance_status FROM uoj_student_class WHERE std_id = ?";
-    
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('i', $std_id);
-    $stmt->execute();
-    
-    $result = $stmt->get_result();
-    $events = [];
-    
-    while ($row = $result->fetch_assoc()) {
-        $event = [
-            'id' => $row['class_id'],
-            'start' =>$row['attend_time'],
-            'status' => $row['attendance_status']
-        ];
-        $events[] = $event;
-    }
-    
-    // Send events as a JSON response
-    echo json_encode($events);
-} else {
-    echo json_encode(['error' => 'Student ID not provided']);
-}
-?>
 
 

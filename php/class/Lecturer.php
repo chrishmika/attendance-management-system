@@ -409,7 +409,7 @@ class Lecturer
             } else {
                 $late = 0;
             }
-            return [($present / $total) * 100, ($late / $total) * 100];
+            return [round(($present / $total) * 100, 1), round(($late / $total) * 100, 1)];
         } else {
             return false;
         }
@@ -440,7 +440,7 @@ class Lecturer
             } else {
                 $late = 0;
             }
-            return [($present / $total) * 100, ($late / $total) * 100];
+            return [round(($present / $total) * 100, 1), round(($late / $total) * 100, 1)];
         } else {
             return false;
         }
