@@ -5,6 +5,7 @@ include_once ROOT_PATH . '/php/config/Database.php';
 include_once ROOT_PATH . '/php/class/Utils.php';
 include_once ROOT_PATH . '/php/class/User.php';
 include_once ROOT_PATH . '/php/class/Lecturer.php';
+include_once ROOT_PATH . '/php/class/Instructure.php';
 
 // Initializing
 $database = new Database();
@@ -195,7 +196,7 @@ include_once ROOT_PATH . '/php/include/content.php';
                 </form>
             </div>
             <div class="modal-footer">
-                <p class="text-center w-100 footer-text">&copy; 2023 Attendance Management System</p>
+                <p class="text-center w-100 footer-text">&copy; 2024 Attendance Management System</p>
             </div>
         </div>
     </div>
