@@ -36,7 +36,7 @@ include_once ROOT_PATH . '/php/include/modal_form.php';
                 if ($_SESSION['user_role'] < 3) {
                     echo "
                 <li class='nav-item'>
-                    <a class='nav-link " . (($activeDash == 2) ? "active" : "") . "' href='" . SERVER_ROOT . "/php/Instructor_dashboard.php'>Instructor</a>
+                    <a class='nav-link " . (($activeDash == 2) ? "active" : "") . "' href='" . SERVER_ROOT . "/php/instructor_dashboard.php'>Instructor</a>
                 </li>";
                 }
                 if ($_SESSION['user_role'] == 3) {

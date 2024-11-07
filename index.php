@@ -5,6 +5,7 @@ include_once ROOT_PATH . '/php/config/Database.php';
 include_once ROOT_PATH . '/php/class/Utils.php';
 include_once ROOT_PATH . '/php/class/User.php';
 include_once ROOT_PATH . '/php/class/Lecturer.php';
+include_once ROOT_PATH . '/php/class/Instructor.php';
 
 // Initializing
 $database = new Database();
